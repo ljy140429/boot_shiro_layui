@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.by.mapper.PermissionMapper">
+    <select id="selectAll" resultType="permission">
+        select * from t_per
+    </select>
+    <insert id="addper">
+        insert into t_per(per_name) values (#{perName})
+    </insert>
+    <delete id="delete">
+         delete from t_per where per_id = #{perId}
+    </delete>
+    <select id="updper" resultType="permission">
+        select * from t_per where per_id = #{perId}
+    </select>
+    <update id="update">
+        update t_per set per_name = #{perName} where per_id = #{perId}
+    </update>
+    <insert id="insert">
+        insert into t_jp(role_id,per_id)
+        values
+        <foreach collection="jp.pers" item="perId" separator=",">
+            <if test="perId != null">
+                (#{jp.roleId},#{perId})
+            </if>
+        </foreach>
+    </insert>
+</mapper>

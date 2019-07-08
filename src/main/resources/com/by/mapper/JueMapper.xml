@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.by.mapper.JueMapper">
+    <select id="selectAll" resultType="jue">
+        select * from t_jue
+    </select>
+    <insert id="addjue">
+        insert into t_jue(role_name) values (#{roleName})
+    </insert>
+    <delete id="delete">
+        delete from t_jue where role_id = #{roleId}
+    </delete>
+    <select id="selectById" resultType="jue">
+        select * from t_jue where role_id = #{roleId}
+    </select>
+    <update id="update">
+        update t_jue set role_name = #{roleName} where role_id = #{roleId}
+    </update>
+</mapper>

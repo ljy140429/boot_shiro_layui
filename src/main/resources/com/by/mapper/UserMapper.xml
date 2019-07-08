@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.by.mapper.UserMapper">
+
+    <select id="selectAll" resultType="user">
+        select * from t_user
+    </select>
+    <insert id="addUser">
+        insert into t_user(user_name,user_pswd) values (#{userName},#{userPswd});
+    </insert>
+    <delete id="deleteUser" parameterType="int">
+        delete from t_user where user_id = #{userId}
+    </delete>
+    <select id="selectById" resultType="user">
+        select * from t_user where user_id = #{userId}
+    </select>
+    <update id="updUser">
+        update t_user set user_name = #{userName},user_pswd = #{userPswd} where user_id = #{userId}
+    </update>
+    <select id="userJue">
+        select role_id from t_uj WHERE user_id = #{userId}
+    </select>
+    <insert id="insertUserRole">
+        insert into t_uj(user_id,role_id)
+        values
+        <foreach collection="urvo.roles" item="roleId" separator=",">
+            <if test="roleId != null">
+                (#{urvo.userId},#{roleId})
+            </if>
+        </foreach>
+    </insert>
+    <select id="selectAll2" resultMap="findAllMap">
+        select
+            u.user_id as user_id,u.user_name as user_name,j.role_name as role_name
+        from (select * FROM t_user) u
+        LEFT JOIN t_uj uj ON u.user_id=uj.user_id
+        LEFT join t_jue j ON uj.role_id=j.role_id
+    </select>
+    <resultMap id="findAllMap" type="com.by.vo.UserVO" autoMapping="true">
+        <id column="user_id" property="userId"></id>
+        <!-- ofType 泛型的类型  -->
+        <collection property="roles" ofType="com.by.model.Jue" autoMapping="true">
+        </collection>
+    </resultMap>
+    <select id="selectAllSize" resultType="int">
+        select count(*) from t_user
+    </select>
+    <select id="selectByName" resultType="user">
+        select * from t_user where user_name = #{username}
+    </select>
+    <select id="findRole" resultType="String">
+        SELECT
+	        j.role_name
+        FROM
+            t_user u
+        LEFT JOIN t_uj uj ON u.user_id = uj.user_id
+        LEFT JOIN t_jue j ON uj.role_id = j.role_id
+        WHERE
+            u.user_name = #{userName};
+    </select>
+    <select id="findPer" resultType="String">
+        SELECT
+            p.per_url
+        FROM
+            t_user u
+        LEFT JOIN t_uj uj ON u.user_id = uj.user_id
+        LEFT JOIN t_jue j ON uj.role_id = j.role_id
+        LEFT JOIN t_jp jp ON j.role_id = jp.role_id
+        LEFT JOIN t_per p ON jp.per_id = p.per_id
+        WHERE
+            u.user_name = #{userName} and p.per_url is not null
+    </select>
+</mapper>
