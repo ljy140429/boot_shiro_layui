@@ -43,6 +43,7 @@ To change this template use File | Settings | File Templates.--%>
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <s:hasPermission name="/user/select">
                 <li class="layui-nav-item">
                     <a class="" href="javascript:;">用户管理</a>
                     <dl class="layui-nav-child">
@@ -50,6 +51,7 @@ To change this template use File | Settings | File Templates.--%>
                         data-title="用户列表" data-id="yhgl" data-url="/user/toyhgl">用户列表</a></dd>
                     </dl>
                 </li>
+                </s:hasPermission>
                 <s:hasRole name="vipuser">
                 <li class="layui-nav-item">
                     <a class="" href="javascript:;">角色</a>
